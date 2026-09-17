@@ -6,6 +6,10 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
 
+    environment {
+        PATH = "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;${env.PATH}"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -14,7 +18,10 @@ pipeline {
                     if (isUnix()) {
                         sh 'python3 -m py_compile hello.py test_hello.py'
                     } else {
-                        bat 'python -m py_compile hello.py test_hello.py'
+                        bat '''
+                            @set "PATH=C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;%PATH%"
+                            python -m py_compile hello.py test_hello.py
+                        '''
                     }
                 }
             }
@@ -27,7 +34,10 @@ pipeline {
                     if (isUnix()) {
                         sh 'python3 -m unittest -v test_hello.py'
                     } else {
-                        bat 'python -m unittest -v test_hello.py'
+                        bat '''
+                            @set "PATH=C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;%PATH%"
+                            python -m unittest -v test_hello.py
+                        '''
                     }
                 }
             }
@@ -40,7 +50,10 @@ pipeline {
                     if (isUnix()) {
                         sh 'python3 hello.py'
                     } else {
-                        bat 'python hello.py'
+                        bat '''
+                            @set "PATH=C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;%PATH%"
+                            python hello.py
+                        '''
                     }
                 }
             }
